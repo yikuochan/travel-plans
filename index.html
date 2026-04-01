@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>名古屋家庭旅遊 4/1-4/5</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI','Helvetica Neue','Hiragino Sans','Hiragino Kaku Gothic ProN','Noto Sans TC','PingFang TC',Arial,sans-serif;background:#f5f3ee;color:#2c2c2a;line-height:1.7}
+.page{max-width:720px;margin:0 auto;padding:20px 16px 60px}
+.hero{background:linear-gradient(135deg,#1a3a4a 0%,#2d5a3f 50%,#4a6741 100%);color:#fff;border-radius:16px;padding:32px 28px;margin-bottom:24px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:rgba(255,255,255,.06);border-radius:50%}
+.hero::after{content:'🌸';position:absolute;top:16px;right:20px;font-size:48px;opacity:.3}
+.hero h1{font-size:24px;font-weight:700;margin-bottom:4px;letter-spacing:1px}
+.hero .subtitle{font-size:14px;opacity:.8;margin-bottom:16px}
+.info-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px 16px;font-size:13px}
+.info-grid .label{opacity:.6;font-size:11px;text-transform:uppercase;letter-spacing:.5px}
+.info-grid .val{font-weight:500}
+
+.day{background:#fff;border-radius:14px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.day-head{padding:14px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none;transition:background .2s}
+.day-head:hover{filter:brightness(.95)}
+.day-head .num{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:#fff;flex-shrink:0}
+.day-head .title{flex:1}
+.day-head .title h3{font-size:15px;font-weight:600}
+.day-head .title span{font-size:12px;color:#888;font-weight:400}
+.day-head .chevron{width:20px;height:20px;transition:transform .3s;color:#aaa;flex-shrink:0}
+.day-head .chevron.open{transform:rotate(90deg)}
+
+.day-body{padding:0 20px 16px;display:none}
+.day-body.show{display:block}
+
+.timeline{position:relative;padding-left:20px}
+.timeline::before{content:’’;position:absolute;left:5px;top:8px;bottom:8px;width:1.5px;background:#e5e3db}
+.t-item{position:relative;padding:6px 0 6px 0;font-size:13.5px}
+.t-item::before{content:’’;position:absolute;left:-19px;top:13px;width:8px;height:8px;border-radius:50%;background:#d3d1c7;border:2px solid #fff;z-index:1}
+.t-item.highlight::before{background:#d85a30}
+.t-item .time{font-weight:600;color:#888;font-size:12px;min-width:46px;display:inline-block}
+.t-item .desc{color:#444}
+
+.tag{display:inline-block;font-size:10px;padding:1px 7px;border-radius:4px;font-weight:600;margin-left:4px;vertical-align:middle;letter-spacing:.3px}
+.tag-fly{background:#E6F1FB;color:#185FA5}
+.tag-hotel{background:#E1F5EE;color:#0F6E56}
+.tag-park{background:#EEEDFE;color:#534AB7}
+.tag-sakura{background:#FBEAF0;color:#993556}
+.tag-shop{background:#FAEEDA;color:#854F0B}
+.tag-food{background:#FAECE7;color:#993C1D}
+
+.food-card{background:#fdfcfa;border:1px solid #ece9e0;border-radius:10px;padding:12px 14px;margin:8px 0;position:relative}
+.food-card .fname{font-weight:700;font-size:14px;color:#993C1D;margin-bottom:2px}
+.food-card .finfo{font-size:12px;color:#888;margin-bottom:6px}
+.food-card .ftips{font-size:12.5px;color:#555;line-height:1.6}
+.food-card .ftips b{color:#2c2c2a;font-weight:600}
+.food-card .freserve{background:#FAECE7;color:#993C1D;font-size:11px;font-weight:600;padding:3px 8px;border-radius:4px;display:inline-block;margin-top:6px}
+
+.prep{background:#fff;border-radius:14px;margin-bottom:16px;overflow:hidden;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.prep-head{padding:14px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;user-select:none;background:#faf9f6}
+.prep-head h3{flex:1;font-size:15px;font-weight:600}
+.prep-head .chevron{width:20px;height:20px;transition:transform .3s;color:#aaa;flex-shrink:0}
+.prep-head .chevron.open{transform:rotate(90deg)}
+.prep-body{padding:0 20px 16px;display:none}
+.prep-body.show{display:block}
+.prep-cat{font-weight:600;color:#185FA5;font-size:12px;letter-spacing:.5px;margin-top:12px;margin-bottom:4px;text-transform:uppercase}
+.prep-item{font-size:13px;padding:4px 0;border-bottom:1px solid #f0ede6;color:#444}
+.prep-item:last-child{border-bottom:none}
+.prep-item b{color:#2c2c2a;font-weight:600}
+
+.note{font-size:12px;color:#999;padding:4px 0 2px 0;font-style:italic}
+.d1 .num{background:#534AB7} .d2 .num{background:#0F6E56} .d3 .num{background:#854F0B} .d4 .num{background:#D85A30} .d5 .num{background:#185FA5}
+
+.budget{background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.budget h3{font-size:15px;font-weight:600;margin-bottom:10px}
+.budget-row{display:flex;justify-content:space-between;padding:4px 0;font-size:13px;border-bottom:1px solid #f0ede6}
+.budget-row:last-child{border-bottom:none;font-weight:700;padding-top:8px;margin-top:4px;border-top:2px solid #e5e3db}
+.budget-row .bl{color:#666}
+.budget-row .bv{font-weight:600}
+
+@media(max-width:480px){.page{padding:12px 10px 40px}.hero{padding:24px 18px}.info-grid{grid-template-columns:1fr}}
+</style>
+
+</head>
+<body>
+<div class="page">
+
+<div class="hero">
+  <h1>名古屋家庭旅遊</h1>
+  <div class="subtitle">2026 / 4 / 1 (三) – 4 / 5 (日)　｜　5天4夜</div>
+  <div class="info-grid">
+    <div><div class="label">成員</div><div class="val">爸爸 · 媽媽 · 兒子 (11歲)</div></div>
+    <div><div class="label">航班</div><div class="val">星宇 JX838 / JX839</div></div>
+    <div><div class="label">住宿 ①</div><div class="val">Daiwa Roynet 太閤通 (4/1)</div></div>
+    <div><div class="label">住宿 ②</div><div class="val">JAL City 錦 (4/2–4/4)</div></div>
+  </div>
+</div>
+
+<!-- DAY 1 -->
+
+<div class="day d1" id="d1">
+  <div class="day-head" onclick="tog('d1')">
+    <div class="num">1</div>
+    <div class="title"><h3>抵達名古屋 · 萬珍軒宵夜</h3><span>4/1 (三)</span></div>
+    <svg class="chevron open" id="d1-chev" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="day-body show" id="d1-body">
+    <div class="timeline">
+      <div class="t-item highlight"><span class="time">10:00</span> <span class="desc">機場接送搭車出發 → 桃園機場 T1 <span class="tag tag-fly">接送</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">🚗 司機：高睿達 ｜ 📱 0976524680 ｜ 🚘 車牌 RFJ-6237<br>⚠ 如遇航班提前抵達，司機仍依原預約時間服務</span></div>
+      <div class="t-item"><span class="time">14:55</span> <span class="desc">桃園機場 T1 出發 <span class="tag tag-fly">JX838</span></span></div>
+      <div class="t-item"><span class="time">18:45</span> <span class="desc">抵達中部國際機場 (NGO)，入境+領行李</span></div>
+      <div class="t-item"><span class="time">19:30</span> <span class="desc">搭名鐵 μ-SKY 或特急 → 名古屋站 <span class="tag tag-fly">🗺 28分 46.5km</span></span></div>
+      <div class="t-item"><span class="time">20:00</span> <span class="desc">名古屋站 → 步行至 Daiwa Roynet 太閤通 <span class="tag tag-hotel">🗺 步行4-5分</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">🚶 走法：名鐵名古屋站下車後，跟著「JR名古屋站」指標穿越站體，往「太閤通口（西口）」方向出站。出站後右轉沿椿町直走約4分鐘即到飯店。帶大行李從名鐵站走全程約10-14分鐘，沿途有手扶梯和電梯</span></div>
+      <div class="t-item"><span class="time">20:15</span> <span class="desc">入住 Daiwa Roynet 太閤通 <span class="tag tag-hotel">住宿</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">🚶 名古屋站太閤通口（南口/新幹線口）出站往南走即到，步行僅3分鐘 0.2km，拖行李也輕鬆</span></div>
+      <div class="t-item highlight"><span class="time">20:45</span> <span class="desc">步行前往萬珍軒 <span class="tag tag-food">🗺 步行5分 1.1km</span></span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">🍜 萬珍軒（マンチンケン）</div>
+      <div class="finfo">📍 中村區太閤通4-38（地鐵太閤通站旁，Daiwa Roynet 步行約5分）<br>🕐 平日 17:00–25:00 ／ 週五六到 25:30 ｜ 週日公休・第三個週一公休</div>
+      <div class="ftips">
+        <b>必點：</b>玉子とじラーメン（蛋花拉麵）— 招牌中的招牌，豚骨雞骨湯底加上滑嫩蛋花，40年不變的味道<br>
+        <b>推薦加點：</b>擔擔麵（土耳其金芝麻）、薄皮餃子（皮薄0.5mm可透光）、青菜炒め<br>
+        <b>排隊提醒：</b>週五六晚上人潮多，可能需排30分鐘以上。週三晚上到人潮相對少
+      </div>
+      <div class="freserve">⚡ 無法預約，現場排隊制｜有停車場25台</div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 2 -->
+
+<div class="day d2" id="d2">
+  <div class="day-head" onclick="tog('d2')">
+    <div class="num">2</div>
+    <div class="title"><h3>犬山城愜意半日遊</h3><span>4/2 (四)</span></div>
+    <svg class="chevron open" id="d2-chev" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="day-body show" id="d2-body">
+    <div class="timeline">
+      <div class="t-item"><span class="time">08:30</span> <span class="desc">退房 Daiwa Roynet，帶大行李前往 JAL City 錦寄放</span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">📍 移動方式（三擇一）：<br>
+      ❶ 🚕 計程車（推薦！）：飯店門口搭計程車直達 JAL City 錦，約7分鐘 / ¥800-1,000。一家三口帶大行李最輕鬆<br>
+      ❷ 🚇 地鐵：太閤通站（桜通線）→ 國際センター站（1站），3號出口步行約9分鐘到 JAL City。全程約15分鐘<br>
+      ❸ 🚶 步行：沿太閤通往東 → 經名古屋站地下通道 → 廣小路通往東 → 納屋橋左轉。全程 1.3km / 步行約20分鐘，帶行李較辛苦<br>
+      💡 JAL City 錦 check-in 是 15:00，但可先寄放行李再出發。最近地鐵站是伏見駅8號出口步行7分鐘</span></div>
+      <div class="t-item"><span class="time">09:00</span> <span class="desc">抵達名鐵名古屋站，購買犬山城下町套票</span></div>
+      <div class="t-item highlight"><span class="time">09:29</span> <span class="desc">搭名鐵犬山線 快速特急 → 犬山站 <span class="tag tag-park">🚃 09:29發→10:00著 31分</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">🎫 使用「犬山城下町套票」（犬山城下町きっぷ）— 詳見下方<br>🚃 名鐵名古屋站1號月台排綠色線，搭往新鵜沼方向的快速特急</span></div>
+      <div class="t-item"><span class="time">10:00</span> <span class="desc">抵達犬山站，步行前往城下町（約10分鐘）</span></div>
+      <div class="t-item"><span class="time">10:15</span> <span class="desc">犬山城下町「本町通り」散策＋食べ歩き <span class="tag tag-shop">城下町</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">江戶時代町割保留至今，古民家改造的小店、咖啡廳林立</span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">🥩 肉兵衛 + 蘭丸（城下町食べ歩き）</div>
+      <div class="finfo">📍 犬山城下町 本町通り（犬山市犬山東古券675）<br>🕐 約 10:00–17:00</div>
+      <div class="ftips">
+        <b>肉兵衛：</b>飛驒牛A5炙燒壽司專門店 — 蝦餅做盤子，整個都能吃！「飛驒牛贅沢あぶり寿司」2貫+軍艦鶉蛋（¥1,000）必點<br>
+        <b>蘭丸：</b>肉兵衛隔壁的姊妹店，飛驒牛壽喜燒串專門 — 米花餅風串燒，A5飛驒牛入口即化。推薦兩店コラボ「飛驒牛食べつくしセット」（¥2,000）一次吃到<br>
+        <b>也推薦：</b>恋小町だんご（七彩糰子）、華串カツ（五色炸串）、醬油おこげ串
+      </div>
+      <div class="freserve">⚡ 免預約，現點現做｜平日人潮少不太需要排隊</div>
+    </div>
+    <div class="food-card" style="border-left:3px solid #185FA5">
+      <div class="fname" style="color:#185FA5">🎫 犬山城下町套票（犬山城下町きっぷ）</div>
+      <div class="finfo">💰 名鐵名古屋站出發：¥1,630／人（兒童另有兒童票價）<br>📎 <a href="https://www.meitetsu.co.jp/plan/campaign/detail/1284811_8034.html" target="_blank">官方網站（日文）</a></div>
+      <div class="ftips">
+        <b>套票內容：</b>❶ 名鐵任一站↔犬山站/犬山遊園站來回車票 ❷ 犬山城入場券 ❸ 城下町指定店家優惠券（10多間店選3間）❹ 有樂苑入場折價券<br>
+        <b>省多少：</b>光是來回車票+犬山城門票就省 ¥180，加上有樂苑共省 ¥540，再加3間店家優惠更划算<br>
+        <b>購買地點：</b>名鐵各站有站務員的窗口，或名古屋站「名鐵服務台（Meitetsu Information Center）」，有多語言簡介<br>
+        <b>⚡ 建議當日購買：</b>4/2 早上到名古屋站名鐵窗口直接買即可，不需提前。出發前先到名鐵服務台，服務員會說明使用方式<br>
+        <b>搭車注意：</b>名鐵名古屋站1號月台，排綠色線，看綠色框框的班次（往犬山/新鵜沼方向）
+      </div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item"><span class="time">11:00</span> <span class="desc">三光稲荷神社（粉紅愛心繪馬超好拍）+ 針綱神社</span></div>
+      <div class="t-item highlight"><span class="time">11:30</span> <span class="desc">犬山城（國寶天守閣）<span class="tag tag-park">國寶</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">日本現存最古老天守閣，登頂可360度眺望木曾川。需脫鞋入內，建議穿厚襪。樓梯陡但11歲沒問題</span></div>
+      <div class="t-item"><span class="time">12:30</span> <span class="desc">下城，城下町繼續食べ歩き 或找間町家咖啡坐下來休息</span></div>
+      <div class="t-item"><span class="time">13:18</span> <span class="desc">搭名鐵犬山線 特急 返回名古屋站 <span class="tag tag-park">🚃 13:18發 約25-30分</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">🚃 回程班次密集（約每10-15分一班），不用趕特定班次。也可搭 13:04 普通 或 13:38 有料特急</span></div>
+      <div class="t-item highlight"><span class="time">13:50</span> <span class="desc">抵達名鐵名古屋站</span></div>
+      <div class="t-item highlight"><span class="time">14:00</span> <span class="desc">コンパル 名駅サンロード店（午餐輕食）<span class="tag tag-food">午餐</span></span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">🦐 コンパル 名駅サンロード店</div>
+      <div class="finfo">📍 名古屋站地下街 サンロード內（犬山回來不用出站！）<br>🕐 8:00–21:00 ｜ ⭐ 4.1 (638評價)</div>
+      <div class="ftips">
+        <b>必點：</b>エビフライサンド（炸蝦三明治）— 名古屋名物！炸蝦+塔塔醬+高麗菜絲，搭配冰咖啡是經典組合<br>
+        <b>也推薦：</b>小倉トースト（紅豆奶油吐司）— 另一款名古屋早餐名物<br>
+        <b>份量提醒：</b>三明治份量適中，當輕食剛好，不會影響晚上的飛驒牛大餐
+      </div>
+      <div class="freserve">⚡ 免預約，直接入座｜名古屋站地下街零移動</div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item"><span class="time">14:30</span> <span class="desc">入住 JAL City 錦 <span class="tag tag-hotel">住宿</span></span></div>
+      <div class="t-item"><span class="time">15:00</span> <span class="desc">下午自由活動：榮町逛街 or 飯店休息</span></div>
+      <div class="t-item highlight"><span class="time">17:30</span> <span class="desc">馬喰一代 名古屋栄店（飛驒牛燒肉）<span class="tag tag-food">晚餐</span></span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">🥩 馬喰一代 名古屋栄店（飛騨牛一頭家）</div>
+      <div class="finfo">📍 BINO栄 5F（地鐵栄駅サカエチカ直結，10號出口步行1分）<br>🕐 11:30–23:00（LO 22:30）｜ 全年無休 ｜ TEL: 052-963-4129</div>
+      <div class="ftips">
+        <b>必點：</b>飛驒牛「最とび」炭火焼コース（¥13,200）— A5中的頂級「最飛び牛」，入口即化<br>
+        <b>午間划算：</b>プレミアム馬喰ランチ（¥3,850）含3種盛+栄限定炭焼ヒレとイクラ手巻き<br>
+        <b>推薦：</b>栄店限定「炭焼ヒレとイクラ手巻き」— 炭烤菲力+鮭魚卵海苔手捲，追加海膽更奢華<br>
+        <b>環境：</b>全席完全個室，適合家庭聚餐，座位寬敞舒適
+      </div>
+      <div class="freserve">✅ 已預約！預約番號 #99128｜17:30入店 19:30退店｜信長コース ¥11,000×2名｜遲到15分鐘自動取消｜ディナー席料 ¥440</div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item highlight"><span class="time">20:30</span> <span class="desc">⚡ 到便利商店採買明日樂高樂園零食＆飲料 <span class="tag tag-shop">備品</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">🎒 建議買：麵包/飯糰（早餐或入園前墊胃）、小包裝零食（排隊時給兒子吃）、寶特瓶茶/水 × 3、糖果。園區內飲食偏貴，自備零食省錢又方便</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 3 -->
+
+<div class="day d3" id="d3">
+  <div class="day-head" onclick="tog('d3')">
+    <div class="num">3</div>
+    <div class="title"><h3>樂高樂園 · 麵家獅子丸</h3><span>4/3 (五) 平日</span></div>
+    <svg class="chevron open" id="d3-chev" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="day-body show" id="d3-body">
+    <div class="timeline">
+      <div class="t-item"><span class="time">09:00</span> <span class="desc">名古屋站搭青波線（あおなみ線）→ 金城埠頭站 <span class="tag tag-park">🗺 24分 21.5km</span></span></div>
+      <div class="t-item highlight"><span class="time">10:00</span> <span class="desc">樂高樂園開園入場 <span class="tag tag-park">樂高樂園</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">✨ 平日人潮少、門票便宜！11歲可玩全設施。推薦順序：The Dragon → Miniland → 海盜水戰 → 忍者世界</span></div>
+      <div class="t-item"><span class="time">12:00</span> <span class="desc">園區午餐（積木薯條必吃！騎士城堡區餐廳）</span></div>
+      <div class="t-item"><span class="time">14:00</span> <span class="desc">樂高工廠參觀（結束免費送限定積木一顆）</span></div>
+      <div class="t-item"><span class="time">15:00</span> <span class="desc">SEA LIFE 水族館（套票只多約¥800）</span></div>
+      <div class="t-item"><span class="time">15:30</span> <span class="desc">Big Shop 購買園區限定樂高組，離園</span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">平日閉園較早（16:00），建議15:30前離園搭車</span></div>
+      <div class="t-item"><span class="time">16:00</span> <span class="desc">搭青波線返回名古屋站 <span class="tag tag-park">🗺 24分 21.5km</span></span></div>
+      <div class="t-item"><span class="time">16:30</span> <span class="desc">☕ 選項：GLITCH COFFEE 喝一杯精品咖啡（名古屋站步行5分）<span class="tag tag-food">咖啡</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">⏱ 16:30-17:00 等獅子丸開店的空檔，走過去只要5分鐘。不想喝咖啡也可在站內逛逛</span></div>
+      <div class="t-item highlight"><span class="time">17:00</span> <span class="desc">步行至麵家獅子丸（開店前排隊）<span class="tag tag-food">🗺 步行3分 1.0km</span></span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">🍜 麵家獅子丸（めんや ししまる）</div>
+      <div class="finfo">📍 中村區龜島2-1-1 新幹線高架橋下（名古屋站太閤通口步行約6分）<br>🕐 11:00–14:30 / 17:00–21:00 ｜ 全年無休</div>
+      <div class="ftips">
+        <b>必點：</b>伊勢海老らぁめん 伊勢龍蝦拉麵（¥1,100）— 龍蝦頭+蝦味噌+蝦油熬製，鮮味爆表<br>
+        <b>也推薦：</b>獅子丸ぱいたんらぁめん 雞白湯拉麵（¥950）— 西式手法打成奶泡的濃郁湯頭<br>
+        <b>必加：</b>升級「特製盛り」（+¥500）附叉燒、季節蔬菜、溏心蛋拼盤；烤牛肉丼（¥400）也很讚<br>
+        <b>小撇步：</b>桌上青森大蒜胡椒油，吃到一半加進去風味大變！
+      </div>
+      <div class="freserve">⚡ 無法預約，現場排隊制｜全員需到齊才能排隊｜座位少翻桌快</div>
+    </div>
+    <div class="food-card" style="border-left:3px solid #854F0B">
+      <div class="fname" style="color:#854F0B">☕ 選項：GLITCH COFFEE & ROASTERS Nagoya</div>
+      <div class="finfo">📍 中村區名駅2-42-2（名古屋站地下1番出口步行2分）<br>🕐 平日 8:00–18:00 / 週末 9:00–18:00 ｜ ⭐ 4.4 (573評價) ｜ TEL: 052-526-1665</div>
+      <div class="ftips">
+        <b>簡介：</b>東京神保町發跡的精品咖啡名店，淺焙 Single Origin 專門，名古屋站旁唯一的世界級精品咖啡<br>
+        <b>推薦：</b>當日精選 Single Origin 手沖、Batch Brew（冷萃）<br>
+        <b>適合時機：</b>16:30 從樂高樂園回到名古屋站，距離獅子丸 17:00 開店還有30分鐘空檔，走5分鐘過去喝一杯剛剛好<br>
+        <b>不想喝咖啡的話：</b>也可以在名古屋站內逛 ESCA 地下街或高島屋殺時間
+      </div>
+    </div>
+    <div class="food-card" style="border-left:3px solid #534AB7">
+      <div class="fname" style="color:#534AB7">🌃 備案：Sky Promenade 屋外展望台（ミッドランドスクエア）</div>
+      <div class="finfo">📍 中村區名駅4-7-1 ミッドランドスクエア 44-46F（名古屋站桜通口步行3分 0.3km）<br>🕐 11:00–22:00（最終入場 21:30）｜ 年中無休 ｜ ⭐ 4.4 (1,377評價)</div>
+      <div class="ftips">
+        <b>特色：</b>東海地區最高屋外展望台（地上220m），360度迴遊式露天觀景步道，三層樓吹抜結構，風景超震撼<br>
+        <b>門票：</b>大人 ¥800 ／ 中高生&65歲以上 ¥500 ／ 小學生 ¥300（週末免費！）<br>
+        <b>看什麼：</b>西側正對名古屋雙塔，北面可見名古屋城點燈，南面高速公路光河，天氣好能看到遠山<br>
+        <b>推薦時段：</b>❶ 16:30 樂高回來後上去看日景+黃昏（跟 GLITCH 二選一）❷ 18:30 獅子丸吃完後上去看夜景（日本夜景遺產認定！），22:00 才關門，時間充裕
+      </div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item"><span class="time">18:30</span> <span class="desc">名古屋站地下街 ESCA 購買伴手禮 <span class="tag tag-shop">購物</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">蝦餅（えびせんべいの里）、小雞布丁蛋糕（ぴよりん）</span></div>
+      <div class="t-item"><span class="time">19:30</span> <span class="desc">返回 JAL City 錦，休息</span></div>
+      <div class="t-item highlight"><span class="time">20:00</span> <span class="desc">⚡ 洗衣時間！帶髒衣物去自助洗衣店 <span class="tag tag-hotel">洗衣</span></span></div>
+    </div>
+    <div class="food-card" style="border-left:3px solid #0F6E56">
+      <div class="fname" style="color:#0F6E56">👕 Day 3 晚上洗衣攻略</div>
+      <div class="finfo">JAL City 錦館內<b>沒有</b>自助洗衣機，但附近有多間投幣式洗衣店：</div>
+      <div class="ftips">
+        <b>推薦① Coin Laundry Dash 栄店</b> — 飯店步行約5分鐘<br>
+        📍 中區栄1-17-30 ｜ 🕐 24小時營業 ｜ ⭐ 3.6<br>
+        洗+烘 ¥800–1,300（45-60分鐘），自動投入洗劑，僅收現金（有千元鈔兌幣機）<br><br>
+        <b>推薦② Wave 丸之内店</b> — 飯店步行約8分鐘<br>
+        📍 中區丸之内1-11-3 ｜ 🕐 24小時營業 ｜ ⭐ 4.9<br>
+        洗+烘 ¥700–900（約60分鐘），自動投入洗劑，僅收現金<br><br>
+        <b>洗衣流程：</b>❶ 晚餐後帶髒衣物和零錢出發 ❷ 投入衣物+硬幣，選洗烘一體（約60分鐘）❸ 等待時可逛附近便利商店或回飯店稍等 ❹ 取回晾在房間即可<br>
+        <b>準備事項：</b>帶足 ¥100 硬幣（約需10-13枚），或帶 ¥1,000 紙鈔用兌幣機。建議從台灣帶一個薄的洗衣袋裝髒衣物
+      </div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item"><span class="time">21:00</span> <span class="desc">取回衣物，回飯店整理</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 4 -->
+
+<div class="day d4" id="d4">
+  <div class="day-head" onclick="tog('d4')">
+    <div class="num">4</div>
+    <div class="title"><h3>賞櫻 · 蓬萊軒 · 寶可夢 · Montbell · かぼす</h3><span>4/4 (六)</span></div>
+    <svg class="chevron open" id="d4-chev" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="day-body show" id="d4-body">
+    <div class="timeline">
+      <div class="t-item"><span class="time">09:00</span> <span class="desc">地鐵鶴舞線 → 鶴舞站，鶴舞公園賞櫻 <span class="tag tag-sakura">🗺 地鐵8分 1.8km</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">櫻花名所百選，750株染井吉野櫻，可在噴泉塔附近野餐</span></div>
+      <div class="t-item"><span class="time">10:30</span> <span class="desc">地鐵至矢場町站 → 松坂屋南館 10F 蓬萊軒排號碼牌 <span class="tag tag-food">🗺 地鐵8分 2.3km</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">⚡ 週六全天營業（11:00–20:30不分段），但人潮更多，建議 10:00 前到抽號</span></div>
+      <div class="t-item"><span class="time">11:00</span> <span class="desc">地鐵名城線 → 名古屋城站，名古屋城 + 名城公園賞櫻 <span class="tag tag-sakura">🗺 地鐵13分 2.2km</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">城堡 × 櫻花經典同框，約900棵櫻花，適逢櫻花祭有屋台美食</span></div>
+      <div class="t-item highlight"><span class="time">12:30</span> <span class="desc">返回松坂屋，蓬萊軒用餐 <span class="tag tag-food">午餐</span></span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">🐟 蓬萊軒 松坂屋店（あつた蓬莱軒）</div>
+      <div class="finfo">📍 松坂屋名古屋店 南館10F（地鐵矢場町站直結）<br>🕐 週六 11:00–20:30（全天不分段）｜ 週二公休</div>
+      <div class="ftips">
+        <b>必點：</b>ひつまぶし 鰻魚三吃（¥4,600起）— 三種吃法：❶ 原味品嚐炭烤鰻魚 ❷ 加蔥花+芥末+海苔 ❸ 淋柴魚高湯做茶泡飯<br>
+        <b>推薦加點：</b>鰻魚蛋捲（うまき）、烤鰻肝，三人建議點一份大份＋一份普通份分食<br>
+        <b>排隊攻略：</b>週六人潮較多，強烈建議 10:00 前到排號碼牌。好處是全天營業不用趕午餐場次，拿到號後去名古屋城賞櫻剛好
+      </div>
+      <div class="freserve">⚡ 無法線上預約，僅限現場抽號碼牌｜可信用卡付款</div>
+    </div>
+    <div class="food-card" style="border-left:3px solid #D85A30">
+      <div class="fname" style="color:#D85A30">🐷 備案：矢場丼 LACHIC 店（みそかつ 矢場とん）</div>
+      <div class="finfo">📍 LACHIC 7F（中區栄3-6-1）— 松坂屋步行7分 0.4km，Montbell步行7分<br>🕐 11:00–22:00（LO 21:00）｜ ⭐ 4.1 (1,325評價) ｜ TEL: 052-269-7070</div>
+      <div class="ftips">
+        <b>何時啟用：</b>蓬萊軒排隊超過1.5小時、或號碼牌等太久時，直接轉戰矢場丼<br>
+        <b>必點：</b>わらじとんかつ（草鞋豬排）— 招牌中的招牌！超大片炸豬排淋上八丁味噌醬，名古屋靈魂美食<br>
+        <b>也推薦：</b>鐵板とんかつ（鐵板豬排）、ひれかつ（里脊豬排）— 怕太大份可選里脊<br>
+        <b>優勢：</b>不用排隊、週六全天營業、就在榮町商圈 LACHIC 百貨內，吃完直接逛街超順
+      </div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item highlight"><span class="time">13:30</span> <span class="desc">步行至隔壁 PARCO東館 2F 寶可夢中心 <span class="tag tag-shop">🗺 步行1分 91m</span></span></div>
+    </div>
+    <div class="food-card" style="border-left:3px solid #EEEDFE">
+      <div class="fname" style="color:#534AB7">🎮 Pokémon Center Nagoya（寶可夢中心 名古屋）</div>
+      <div class="finfo">📍 名古屋PARCO東館 2F（中區栄3-29-1）— 松坂屋（蓬萊軒）隔壁！<br>🕐 10:00–21:00 ｜ ⭐ 4.2 (2,401評價) ｜ TEL: 052-746-9951</div>
+      <div class="ftips">
+        <b>必看：</b>名古屋限定商品（結合名古屋美食的皮卡丘吊飾等）<br>
+        <b>必買：</b>限定寶可夢布偶、文具、零食禮盒（送人超適合）<br>
+        <b>帶兒子注意：</b>店內有扭蛋機和體驗區，小朋友容易流連忘返，建議預留30-45分鐘<br>
+        <b>動線超順：</b>蓬萊軒（松坂屋10F）吃完 → 下樓走到隔壁PARCO 2F → 逛完走10分鐘到Montbell
+      </div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item"><span class="time">14:15</span> <span class="desc">步行至中日大樓 4F Montbell 榮店 <span class="tag tag-shop">🗺 步行10分 0.7km</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">品項齊全可退稅，輕量羽絨/風衣/機能T恤都很值得入手</span></div>
+      <div class="t-item"><span class="time">15:30</span> <span class="desc">榮町/大須商店街自由逛街 <span class="tag tag-shop">🗺 步行8分 2.0km</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">驚安殿堂、松坂屋、LACHIC、綠洲21拍照</span></div>
+      <div class="t-item highlight"><span class="time">17:30</span> <span class="desc">晩餐 かぼす（爐端原始焼き）<span class="tag tag-food">🗺 Montbell步行5分 0.4km</span></span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">🔥 晩餐 かぼす（Kabosu）</div>
+      <div class="finfo">📍 中區栄4-3-7 1F（栄駅12番出口步行3分，Montbell步行5分）<br>🕐 17:00–24:00（料理LO 23:00）｜ ⭐ 4.7 (59評價) ｜ TEL: 052-212-8510<br>🚭 <b>全席禁煙</b> ✅ ｜ 個室あり ｜ 2025年4月新開幕</div>
+      <div class="ftips">
+        <b>特色：</b>モダン和風爐端燒，ガラス張り開放空間，中央囲炉裏で遠火じっくり原始焼き — 現場看烤魚的臨場感超棒，兒子會很興奮<br>
+        <b>必點：</b>原始焼き（のど黒／銀ダラ西京焼き／トロイワシ一本焼き）— 遠火慢烤，外酥內嫩，鮮味爆表<br>
+        <b>也推薦：</b>カツオ藁焼き（鰹魚稻草炙燒）、自家製和牛メンチカツ、南部鉄器鯛めし釜飯（必點〆！）<br>
+        <b>套餐：</b>¥5,000起含8品+飲放，單點三人約 ¥8,000-12,000<br>
+        <b>動線：</b>從 Montbell 或大須商店街走過來都很近，吃完可搭地鐵或步行回飯店
+      </div>
+      <div class="freserve">✅ 已預約！預約番號 RAU531146｜4/4 (六) 17:30｜席のみ（コース選択なし）3名｜可刷卡</div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item"><span class="time">19:30</span> <span class="desc">搭地鐵或步行返回 JAL City 錦，整理行李 <span class="tag tag-hotel">🗺 步行29分 2.0km 或地鐵1站</span></span></div>
+    </div>
+  </div>
+</div>
+
+<!-- DAY 5 -->
+
+<div class="day d5" id="d5">
+  <div class="day-head" onclick="tog('d5')">
+    <div class="num">5</div>
+    <div class="title"><h3>KAKO早餐 · 丸忠壽司 · 回程</h3><span>4/5 (日)</span></div>
+    <svg class="chevron open" id="d5-chev" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="day-body show" id="d5-body">
+    <div class="timeline">
+      <div class="t-item"><span class="time">08:45</span> <span class="desc">退房 JAL City 錦</span></div>
+      <div class="t-item highlight"><span class="time">09:00</span> <span class="desc">KAKO 柳橋店 名古屋式早餐 <span class="tag tag-food">🗺 步行5分 0.3km</span></span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">☕ KAKO 柳橋店（珈琲店 かこ）</div>
+      <div class="finfo">📍 中村區名駅5-30-4 名駅KDビル（JAL City 錦步行5分）<br>🕐 週日 7:00–11:00（僅早上營業）｜ ⭐ 4.0 (932評價) ｜ TEL: 052-583-8839</div>
+      <div class="ftips">
+        <b>必點：</b>シャンティールージュスペシャル（ドリンク代+¥350）— 自家製あんこ+生クリーム+季節水果コンフィチュール+奶油，全部載到吐司上，名古屋モーニング的極致<br>
+        <b>也推薦：</b>シャンティー（+¥250）生クリーム+コンフィチュール版、基本モーニング（ドリンク代のみ）附奶油吐司+蔬菜汁<br>
+        <b>咖啡：</b>ブレンドコーヒー ¥400（可免費續杯！）1972年創業自家焙煎，ネルドリップ手沖<br>
+        <b>為什麼選柳橋店：</b>比花車本店寬敞、座位多、週日排隊少很多。同品質同菜單，觀光客也能輕鬆入座
+      </div>
+      <div class="freserve">⚡ 無法預約｜週日只營業到11:00，建議9:00前到</div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item"><span class="time">10:00</span> <span class="desc">步行至名古屋站寄放行李 Coin Locker <span class="tag tag-hotel">🗺 步行11分 0.8km</span></span></div>
+      <div class="t-item"><span class="time">10:30</span> <span class="desc">榮町/大須商圈最後補貨 <span class="tag tag-shop">購物</span></span></div>
+      <div class="t-item highlight"><span class="time">12:00</span> <span class="desc">海転壽司 丸忠 午餐 <span class="tag tag-food">🗺 名古屋站內步行3分</span></span></div>
+    </div>
+    <div class="food-card">
+      <div class="fname">🍣 海転壽司 丸忠 名駅店（うみてん まるちゅう）</div>
+      <div class="finfo">📍 中村區名駅4-7-25 サンロード地下街（名古屋站地下街直結，不用出站！）<br>🕐 11:00–22:00 ｜ ⭐ 3.7 (461評價) ｜ TEL: 052-581-1121</div>
+      <div class="ftips">
+        <b>特色：</b>名古屋在地迴轉壽司，新鮮度不輸專門店，價格親民<br>
+        <b>推薦：</b>當日鮮魚握壽司、炙燒系列、茶碗蒸，三人吃飽約 ¥3,000-5,000<br>
+        <b>最後一餐的好選擇：</b>就在名古屋站地下街サンロード，吃完直接取行李搭車去機場，零浪費時間
+      </div>
+      <div class="freserve">⚡ 無需預約｜迴轉壽司隨到隨吃｜可刷卡</div>
+    </div>
+    <div class="timeline" style="margin-top:8px">
+      <div class="t-item"><span class="time">13:00</span> <span class="desc">山崎川四季之道散步賞櫻（若時間充裕）<span class="tag tag-sakura">🗺 地鐵20分 4.7km</span></span></div>
+      <div class="t-item"><span class="time"></span> <span class="desc note">⏱ 時間不夠可跳過，直接在名古屋站逛 ESCA/高島屋</span></div>
+      <div class="t-item"><span class="time">16:30</span> <span class="desc">名古屋站取行李</span></div>
+      <div class="t-item"><span class="time">17:00</span> <span class="desc">搭名鐵 μ-SKY → 中部國際機場 <span class="tag tag-fly">🗺 28分 46.5km</span></span></div>
+      <div class="t-item"><span class="time">17:30</span> <span class="desc">機場免稅店最後採購 + 中華そば半蔵製麺（獅子丸機場分店）</span></div>
+      <div class="t-item"><span class="time">19:55</span> <span class="desc">NGO 出發 <span class="tag tag-fly">JX839</span></span></div>
+      <div class="t-item"><span class="time">22:00</span> <span class="desc">抵達桃園機場 T1 🎉 回家！</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 賞櫻短行程 -->
+
+<div class="prep" id="mozo">
+  <div class="prep-head" onclick="tog('mozo')">
+    <h3>🛍 備案：mozo WONDER CITY + もりもり壽司</h3>
+    <svg class="chevron open" id="mozo-chev" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="prep-body show" id="mozo-body">
+    <div class="prep-cat">📍 位置（距離較遠，需專程前往）</div>
+    <div class="prep-item">📍 名古屋市西區二方町40（名古屋站開車約15分 10.7km）<br>🚇 地鐵鶴舞線「上小田井站」轉名鐵犬山線或巴士，車程約30-40分<br>⚠ 離市區較遠，建議有空閒半天才安排</div>
+
+```
+<div class="prep-cat">🏬 mozo WONDER CITY</div>
+<div class="prep-item"><b>簡介：</b>名古屋西區最大購物中心，超過200間店舖。有 UNIQLO、GU、ABCmart、LOFT、無印良品、Seria 等<br>⭐ 4.0 (10,296評價) ｜ 🕐 10:00–21:00（餐廳至22:00）｜ TEL: 052-505-1888<br><a href="https://www.mozo-wondercity.com/" target="_blank">官方網站</a></div>
+
+<div class="prep-cat">🍣 もりもり壽司 mozo店</div>
+<div class="prep-item"><b>簡介：</b>北陸金澤發祥的迴轉壽司名店！使用金澤直送鮮魚，品質遠高於一般迴轉壽司，在名古屋很受歡迎<br>⭐ 4.2 (1,764評價) ｜ TEL: 052-325-4678<br><b>推薦：</b>のど黒（喉黑）、白蝦軍艦、金澤蟹味噌、能登鮪魚<br><a href="https://kyowafuzu.com/morimori.html" target="_blank">官方網站</a></div>
+
+<div class="prep-cat">💡 適合安排的時機</div>
+<div class="prep-item"><b>Day 2 下午：</b>犬山回來後如果不想在榮町逛街，可搭車去 mozo 逛+吃もりもり壽司，但要注意馬喰一代 17:30 的預約時間<br><b>Day 5 上午：</b>如果不去大須補貨，改去 mozo 逛半天+吃壽司當午餐，但要注意回名古屋站搭車去機場的時間</div>
+```
+
+  </div>
+</div>
+
+<!-- 賞櫻短行程 -->
+
+<div class="prep" id="sakura">
+  <div class="prep-head" onclick="tog('sakura')">
+    <h3>🌸 名古屋賞櫻短行程指南</h3>
+    <svg class="chevron open" id="sakura-chev" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="prep-body show" id="sakura-body">
+
+```
+<div class="prep-cat">🌸 花況預測（2026年）</div>
+<div class="prep-item">名古屋開花日預估 <b>3/20</b>，滿開日約 <b>3/29</b>。你們 4/1-4/5 到訪時正值<b>滿開末期～櫻吹雪</b>，仍有很高機率看到美景，尤其遲開品種（枝垂櫻、八重櫻）可能仍在盛放。建議出發前用「櫻花最前線 APP」確認即時花況。</div>
+
+<div class="prep-cat">📍 已安排在行程內的賞櫻點</div>
+<div class="prep-item"><b>① 鶴舞公園（Day 3 上午 9:00）</b>— 日本櫻花百選名所，750株染井吉野櫻。噴泉塔北側的櫻花林最美，可鋪墊子野餐。櫻花祭期間（3/20–4/12）有屋台和夜櫻點燈。<br>📍 地鐵鶴舞站4號出口即到 ｜ ⭐ 4.2 (8,000+評價) ｜ 🕐 24小時開放免費</div>
+<div class="prep-item"><b>② 名古屋城 + 名城公園（Day 3 上午 11:00）</b>— 城堡×櫻花經典同框。城內10種品種約900棵，3月下旬枝垂櫻先開，4月初染井吉野滿開。名城公園在城北側，池塘倒映天守+櫻花超美。<br>📍 地鐵名古屋城站7號出口步行5分 ｜ ⭐ 4.2 (43,000+評價) ｜ 🕐 9:00-16:30 ¥500</div>
+<div class="prep-item"><b>③ 山崎川四季之道（Day 5 下午 14:00 選配）</b>— 日本百選名所，兩岸600棵櫻花綿延2.5公里的粉白長廊，倒映河面超浪漫。晚上有點燈。<br>📍 地鐵瑞穗區役所站步行10分 ｜ ⭐ 4.4 (494評價) ｜ 🕐 24小時開放免費<br>⚠ 距榮町 4.7km / 地鐵20分。Day 5 時間緊就跳過</div>
+
+<div class="prep-cat">📍 可追加的賞櫻短行程</div>
+<div class="prep-item"><b>④ 東山動植物園「櫻花迴廊」</b>— 100種1,300棵櫻花，花期超長（3月上旬～4月下旬），即使4月初其他地方開始凋謝，這裡的八重櫻、御衣黃還在盛放！4/4-4/12有夜間八重櫻散步點燈活動。適合親子，動物園+植物園一起逛。<br>📍 地鐵東山公園站步行3分 ｜ ⭐ 4.4 (8,500+評價) ｜ 🕐 9:00-16:30 ¥500 ｜ 週一公休<br>💡 <b>推薦安排：</b>Day 2 從吉卜力公園回程時順路（同在東山線上），或 Day 5 上午替代逛街</div>
+<div class="prep-item"><b>⑤ 庄內綠地公園</b>— 800棵櫻花+2萬棵油菜花同時盛開，粉白×金黃的雙色花海。有櫻花隧道騎行步道，人潮比市區少很多，適合悠閒散步。<br>📍 地鐵鶴舞線庄內綠地公園站2號出口步行1分 ｜ ⭐ 4.1 (2,551評價) ｜ 🕐 24小時開放免費<br>💡 <b>推薦安排：</b>Day 3 早上先來這裡（鶴舞線直達），再去鶴舞公園，兩個公園同一條地鐵線</div>
+<div class="prep-item"><b>⑥ 名城公園夜櫻</b>— 如果 Day 3 傍晚還有體力，從大須商店街回飯店途中繞一下名城公園看夜櫻點燈（免費）。<br>📍 地鐵名城公園站出站即達 ｜ 🕐 點燈至20:00</div>
+
+<div class="prep-cat">🗓 推薦賞櫻組合方案</div>
+<div class="prep-item"><b>方案A（維持現有行程）：</b>Day 3 鶴舞公園→名古屋城，Day 5 山崎川。共3個賞櫻點，輕鬆不趕。</div>
+<div class="prep-item"><b>方案B（加碼版）：</b>Day 3 早上加庄內綠地→鶴舞公園→名古屋城（同線3連發），Day 5 換成東山動植物園（看晚開八重櫻）。共4-5個賞櫻點。</div>
+<div class="prep-item"><b>方案C（極致版）：</b>Day 3 庄內綠地→鶴舞→名古屋城，傍晚名城公園夜櫻。Day 5 東山動植物園+山崎川。6個賞櫻點全收！但會比較趕。</div>
+```
+
+  </div>
+</div>
+
+<!-- Google Maps 交通驗證 -->
+
+<div class="budget" style="border-left:3px solid #185FA5">
+  <h3>🗺 Google Maps 交通時間驗證</h3>
+  <div class="budget-row"><span class="bl">Day 1 飯店→萬珍軒</span><span class="bv">1.1km ／ 步行5分</span></div>
+  <div class="budget-row"><span class="bl">Day 2 名古屋站→犬山站</span><span class="bv">名鐵約30分（鐵路套票）</span></div>
+  <div class="budget-row"><span class="bl">Day 3 名古屋站→樂高樂園</span><span class="bv">21.5km ／ 青波線24分</span></div>
+  <div class="budget-row"><span class="bl">Day 3 名古屋站→麵家獅子丸</span><span class="bv">1.0km ／ 步行3分</span></div>
+  <div class="budget-row"><span class="bl">Day 4 鶴舞→松坂屋(蓬萊軒)</span><span class="bv">2.3km ／ 地鐵8分</span></div>
+  <div class="budget-row"><span class="bl">Day 4 松坂屋→名古屋城</span><span class="bv">2.2km ／ 地鐵13分</span></div>
+  <div class="budget-row"><span class="bl">Day 4 蓬萊軒→Montbell</span><span class="bv">0.4km ／ 步行2分 ✨</span></div>
+  <div class="budget-row"><span class="bl">Day 4 Montbell→大須商店街</span><span class="bv">2.0km ／ 步行8分</span></div>
+  <div class="budget-row"><span class="bl">Day 5 大須→山崎川</span><span class="bv">4.7km ／ 地鐵20分</span></div>
+  <div class="budget-row"><span class="bl">Day 5 名古屋站→中部機場</span><span class="bv">46.5km ／ 名鐵28分</span></div>
+  <div class="budget-row" style="color:#0F6E56"><span class="bl">✅ Day4 全天 6 個景點皆在 3km 內</span><span class="bv">地鐵一日券最划算</span></div>
+</div>
+
+<!-- 預算概估 -->
+
+<div class="budget">
+  <h3>💰 預算概估（3人 / TWD）</h3>
+  <div class="budget-row"><span class="bl">機票（星宇 × 3人）</span><span class="bv">$59,191</span></div>
+  <div class="budget-row"><span class="bl">住宿 Daiwa Roynet 1晚</span><span class="bv">$3,811</span></div>
+  <div class="budget-row"><span class="bl">住宿 JAL City 錦 3晚</span><span class="bv">$21,605</span></div>
+  <div class="budget-row"><span class="bl">犬山城下町套票（¥1,630 × 2 + 兒童票）</span><span class="bv">~$1,500</span></div>
+  <div class="budget-row"><span class="bl">樂高樂園門票（易遊網 ✅已購）</span><span class="bv">$3,395</span></div>
+  <div class="budget-row"><span class="bl">交通+餐食+購物（估）</span><span class="bv">~$20,000</span></div>
+  <div class="budget-row"><span class="bl">合計（估）</span><span class="bv">~$112,700</span></div>
+</div>
+
+<!-- 事前準備 -->
+
+<div class="prep" id="prep">
+  <div class="prep-head" onclick="tog('prep')">
+    <h3>📋 事前準備清單</h3>
+    <svg class="chevron open" id="prep-chev" viewBox="0 0 20 20"><path d="M7 4l6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+  </div>
+  <div class="prep-body show" id="prep-body">
+
+```
+<div class="prep-cat">🍽 餐廳預約</div>
+<div class="prep-item"><b>馬喰一代 名古屋栄店：</b>✅ 已預約完成！預約番號 <b>#99128</b>｜4/2 (四) 17:30入店 19:30退店｜信長コース ¥11,000×2名分｜⚠ 遲到15分自動取消</div>
+<div class="prep-item"><b>晩餐 かぼす：</b>✅ 已預約完成！預約番號 <b>RAU531146</b>｜4/4 (六) 17:30｜席のみ 3名｜全席禁煙 ✅</div>
+
+<div class="prep-cat">🎫 門票</div>
+<div class="prep-item"><b>犬山城下町套票：</b>名鐵名古屋站出發 ¥1,630／人，含來回車票+犬山城門票+城下町3間店優惠券+有樂苑折價。<b>當日早上在名古屋站名鐵窗口或服務台購買即可</b>，不需提前。服務台有多語言說明。</div>
+<div class="prep-item"><b>樂高樂園：</b>✅ 已購買（易遊網，TWD $3,395，刷卡）。當天出示 QR Code 入園即可。建議加購 SEA LIFE 套票（現場加購約 ¥800）。</div>
+
+<div class="prep-cat">🛡 旅平險</div>
+<div class="prep-item"><b>信用卡加保旅平險：</b>✅ 全員已完成加保（太太、爸爸、兒子）。確認保障範圍涵蓋海外醫療、班機延誤、行李遺失等。</div>
+
+<div class="prep-cat">📱 網路</div>
+<div class="prep-item"><b>Saily eSIM：</b>下載 Saily APP，購買日本方案，結帳輸入優惠碼 <b>gooaye</b> 享 85 折，或透過專屬連結 <a href="https://saily.com/gooaye" target="_blank">saily.com/gooaye</a> 購買。出發前在台灣先安裝 eSIM，到日本落地直接啟用，1支手機開熱點 3人共用。記得確認手機支援 eSIM（iPhone XS 以後皆可）。</div>
+
+<div class="prep-cat">💴 換匯</div>
+<div class="prep-item">✅ 換匯已完成。<br><b>⚠ 出發前提醒：</b>至國泰世華外匯 ATM 提領 ¥200,000 日幣現金。建議出發前1-2天提領，避免當天趕不及。</div>
+
+<div class="prep-cat">🚃 交通</div>
+<div class="prep-item"><b>機場 → 名古屋站：</b>名鐵 μ-SKY（¥1,250+特急券 ¥390）28分鐘，或名鐵特急（¥1,250）37分鐘。</div>
+<div class="prep-item"><b>Day 4 市區遊：</b>建議買名古屋地鐵一日券（¥760），賞櫻+購物一整天很划算。</div>
+<div class="prep-item"><b>IC 卡：</b>其他天用 Suica / ICOCA / TOICA 感應即可，便利商店也能用。</div>
+
+<div class="prep-cat">👕 服裝</div>
+<div class="prep-item">4月初名古屋均溫 12–18°C，早晚偏涼 8–10°C。建議洋蔥式穿搭：薄羽絨或風衣 + 長袖 + 薄T。</div>
+<div class="prep-item">樂高樂園有水上設施（海盜水戰），建議帶輕便雨衣或替換衣物給兒子。</div>
+
+<div class="prep-cat">📄 證件與APP</div>
+<div class="prep-item"><b>護照</b>、信用卡、旅平險保單。</div>
+<div class="prep-item"><b>APP：</b>Google Maps（離線地圖）、NAVITIME（日本交通查詢）、櫻花最前線 APP（即時花況）、Saily。</div>
+
+<div class="prep-cat">💡 退稅</div>
+<div class="prep-item">日本 2026 年退稅新制：消費滿 ¥5,000 需先全額付款，離境時於機場辦理退稅退款（出發前再次確認最新政策）。Montbell、松坂屋、驚安殿堂等均可退稅。</div>
+
+<div class="prep-cat">💊 常備藥品</div>
+<div class="prep-item">✅ 常備藥品已備妥（感冒藥、腸胃藥、退燒藥、止瀉藥、過敏藥等）。</div>
+
+<div class="prep-cat">🎒 其他</div>
+<div class="prep-item">行動電源、折疊傘、防曬乳、兒子小背包（裝樂高戰利品＆吉卜力紀念品）、保溫瓶（日本到處有免費飲水機）、<b>薄洗衣袋</b>（Day 3 晚上自助洗衣用）、<b>¥100 硬幣備足</b>（洗衣機用）。</div>
+```
+
+  </div>
+</div>
+
+</div>
+
+<script>
+function tog(id){
+  const b=document.getElementById(id+'-body');
+  const c=document.getElementById(id+'-chev');
+  if(b.classList.contains('show')){b.classList.remove('show');c.classList.remove('open')}
+  else{b.classList.add('show');c.classList.add('open')}
+}
+</script>
+
+</body>
+</html>
